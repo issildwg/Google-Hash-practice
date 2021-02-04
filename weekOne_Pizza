@@ -1,0 +1,118 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+//MAIN CLASS
+public class Main {
+
+    private static final int PIZZA_INFO = 0;
+    private static final int ROWS = 0;
+    private static final int COLUMNS = 1;
+    private static final int INGREDIENT_MINIMUM = 2;
+    private static final int SLICE_MAXIMUM = 3;
+
+    private static String chooseFile() { // Uncomment the file you wish to check
+        return "example.in";
+//        return "small.in";
+//        return "medium.in";
+//        return "big.in";
+    }
+
+    public static void main(String[] args) {
+        String path = chooseFile();
+        String[] fileContents = new String[0];
+        try {
+            fileContents = readFile(path);
+        } catch (Exception e) {
+            System.err.println("Couldn't find: " + path);
+            System.exit(0);
+        }
+
+        String[] pizzaData = fileContents[PIZZA_INFO].split(" ");
+        Pizza pizza = new Pizza( // Initialise pizza
+                Integer.parseInt(pizzaData[ROWS]),
+                Integer.parseInt(pizzaData[COLUMNS])
+        );
+        int minIngredient = Integer.parseInt(pizzaData[INGREDIENT_MINIMUM]); // Set minimum amount of ingredients
+        int maxSlices = Integer.parseInt(pizzaData[SLICE_MAXIMUM]); // Set maximum amount of cells per slice
+
+        for (int i = 1; i < fileContents.length; i++) {
+            char[] line = fileContents[i].toCharArray();
+            for (int j = 0; j < line.length; j++) {
+                pizza.setCell(line[j], i - 1, j); // Create pizza from text file
+            }
+        }
+
+        int i = 0;
+        int j = Integer.parseInt(pizzaData[COLUMNS]) - 1;
+        while (i < j){
+
+        }
+    }
+
+
+    private static int getMinimumFactor(int number){
+        boolean foundFactor = false;
+        int i = 1;
+        while (!foundFactor && i < number){
+            i++;
+            if (number % i == 0){
+                foundFactor = true;
+            }
+        }
+        return i;
+    }
+
+    private static String[] readFile(String path) throws FileNotFoundException {
+        File file = new File(path);
+        Scanner fileReader = new Scanner(file);
+        ArrayList<String> lines = new ArrayList<>();
+        while (fileReader.hasNextLine()) {
+            lines.add(fileReader.nextLine());
+        }
+        return lines.toArray(new String[0]);
+    }
+
+}
+
+
+
+
+//PIZZA CLASS
+public class Pizza {
+    char[][] pizza;
+
+    Pizza(int width, int height) {
+        pizza = new char[width][height];
+    }
+
+    public char getCell(int x, int y) {
+        return pizza[x][y];
+    }
+
+    public void setCell(char value, int x, int y){
+        this.pizza[x][y] = value;
+    }
+}
+
+
+
+//SLICE CLASS
+public class Slice {
+    ArrayList<ArrayList<Character>> slice;
+    int maxSize;
+
+    Slice(int maxSize){
+        this.maxSize = maxSize;
+        slice = new ArrayList<>();
+        slice.add(new ArrayList<>());
+    }
+
+    public boolean addCell (char cell, int x, int y){
+        if (!((slice.size() * slice.get(0).size()) >= maxSize)){
+            return false;
+        }
+    }
+
+}
